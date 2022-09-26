@@ -45,7 +45,65 @@ const articleDisplay = async function () {
         //add option tag with color in ID "colors"
         document.getElementById("colors").appendChild(newOption);
     });
-   
+    console.log(color);
+    //function add item to cart
+    addItemToCart();
 };
 articleDisplay();
+    
 
+//_____Add to cart 
+//localstorage
+
+function addItemToCart() {
+
+    //call elements to have selected informations
+    const selectID = productID;
+    const selectColor = document.getElementById("colors");
+    const selectQuantity = document.getElementById("quantity");
+    
+    //call button
+    let button = document.getElementById("addToCart"); 
+    
+    //add item when click on the button
+    button.addEventListener("click", () => {
+        //reading localStorage and transform JSON in JS or create new table if it doesn't exist
+        let registeredItem = JSON.parse(localStorage.getItem("item")) || [];
+
+        //selected informations of item
+        let newItem = {
+            idValue: selectID,
+            colorValue: selectColor.value,
+            quantityValue: selectQuantity.value,
+        };
+        
+        //if color is defined and 100 > quantity > 0
+        if (selectColor.value !== "" && 100 > selectQuantity.value && selectQuantity.value > 0){
+            registeredItem.push(newItem);
+            localStorage.setItem("item", JSON.stringify(registeredItem));
+        }
+        //else alert message
+        else {
+            alert("Veuiller renseigner une quantité et une couleur");
+        }
+
+        console.log(registeredItem);
+
+    })
+}
+
+
+
+// let selectQuantity = document.getElementById("quantity");
+// let selectColor = document.getElementById("colors");
+
+//     if (selectQuantity > 0 && selectColor > 0) {
+//     }
+//     addItem();
+// function addItem() {
+//     let productNumbers = localStorage.getItem("itemNumbers");
+//     localStorage.setItem("addItem", 1);
+// }
+
+
+//JSON.stringify = convertir les données JS en JSON
