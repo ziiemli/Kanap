@@ -45,7 +45,7 @@ const articleDisplay = async function () {
         //add option tag with color in ID "colors"
         document.getElementById("colors").appendChild(newOption);
     });
-    console.log(color);
+
     //function add item to cart
     addItemToCart();
 };
@@ -86,8 +86,6 @@ function addItemToCart() {
         else {
             alert("Veuiller renseigner une quantité et une couleur");
         }
-
-        console.log(registeredItem);
 
     })
 }

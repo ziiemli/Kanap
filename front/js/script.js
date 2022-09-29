@@ -1,3 +1,4 @@
+let products = [];
 //_____Recover products from API
 const recoverProducts = async function () {
     await fetch("http://localhost:3000/api/products")
@@ -15,13 +16,13 @@ const productsDisplay = async function () {
     await recoverProducts();
     //add informations of products
     document.getElementById("items").innerHTML = products.map(product =>
-    `<a href="./product.html?id=${product._id}">
-        <article>
-            <img src="${product.imageUrl}" alt="${product.altTxt}">
-            <h3 class="productName">${product.name}</h3>
-            <p class="productDescription">${product.description}</p>
-        </article>
-    </a>`)
+        `<a href="./product.html?id=${product._id}">
+            <article>
+                <img src="${product.imageUrl}" alt="${product.altTxt}">
+                <h3 class="productName">${product.name}</h3>
+                <p class="productDescription">${product.description}</p>
+            </article>
+        </a>`)
     //delete "," between products
     .join("");
 };
