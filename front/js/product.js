@@ -79,12 +79,31 @@ function addItemToCart() {
         
         //if color is defined and 100 > quantity > 0
         if (selectColor.value !== "" && 100 > selectQuantity.value && selectQuantity.value > 0){
-            registeredItem.push(newItem);
-            localStorage.setItem("item", JSON.stringify(registeredItem));
+            //compare the selected product and the localStorage product
+            let sameProduct = registeredItem.find(p => 
+                productID === p.idValue && 
+                selectColor.value === p.colorValue
+            );
+            //if same item in localStorage > modify quantity
+            if (sameProduct) {
+                //add localStorage item quantity and quantity selected, parseInt > transform string in entire number
+                newQuantity = parseInt(sameProduct.quantityValue) + parseInt(selectQuantity.value);
+
+                //assign newQuantity of localStorage product
+                sameProduct.quantityValue = newQuantity;
+
+                //return data in localStorage
+                localStorage.setItem("item", JSON.stringify(registeredItem));
+            }
+            //else > add newItem
+            else {
+                registeredItem.push(newItem);
+                localStorage.setItem("item", JSON.stringify(registeredItem));
+            }
         }
         //else alert message
         else {
-            alert("Veuiller renseigner une quantité et une couleur");
+            alert("Veuiller renseigner une quantité valide et une couleur");
         }
 
     })
