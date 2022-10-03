@@ -109,18 +109,3 @@ function addItemToCart() {
     })
 }
 
-
-
-// let selectQuantity = document.getElementById("quantity");
-// let selectColor = document.getElementById("colors");
-
-//     if (selectQuantity > 0 && selectColor > 0) {
-//     }
-//     addItem();
-// function addItem() {
-//     let productNumbers = localStorage.getItem("itemNumbers");
-//     localStorage.setItem("addItem", 1);
-// }
-
-
-//JSON.stringify = convertir les données JS en JSON
