@@ -20,19 +20,25 @@ const recoverArticle = async function () {
 
 //_____Display article
 const articleDisplay = async function () {
-    await recoverArticle();
+    await recoverArticle()
     //img
-    document.querySelector(".item__img").innerHTML = 
-    `<img src="${article.imageUrl}" alt="${article.altTxt}">`
+    let imageContainer = document.getElementsByClassName("item__img");
+    let image = document.createElement("img");
+    image.src = article.imageUrl;
+    image.alt = article.altTxt;
+    imageContainer[0].appendChild(image);
     //title
-    document.getElementById("title").innerHTML = 
-    `${article.name}`
+    let titleContainer = document.getElementById("title");
+    let titleText = document.createTextNode(`${article.name}`);
+    titleContainer.appendChild(titleText);
     //price
-    document.getElementById("price").innerHTML = 
-    `${article.price}`
+    let priceContainer = document.getElementById("price");
+    let priceText = document.createTextNode(`${article.price}`);
+    priceContainer.appendChild(priceText);
     //description
-    document.getElementById("description").innerHTML = 
-    `${article.description}`
+    let descriptionContainer = document.getElementById("description");
+    let descriptionText = document.createTextNode(`${article.description}`);
+    descriptionContainer.appendChild(descriptionText);
     //colors_____
     //recover different colors of product
     const colors = article.colors;
