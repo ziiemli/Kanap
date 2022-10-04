@@ -13,7 +13,7 @@ const cartInit = () => {
         //call functions with data as parameters
         itemsDisplay(data);
         totalDisplay(data);
-       console.log(data);
+        console.log(data);
     })
 }
 cartInit();
@@ -34,46 +34,147 @@ async function recoverProducts(item) {
 const itemsDisplay = (data) => {
     //loop through data to display each product
     data.forEach( item => {
-        document.getElementById("cart__items").innerHTML += 
-        `<article class="cart__item" data-id="${item.idValue}" data-color="${item.colorValue}">
-            <div class="cart__item__img">
-            <img src="${item.imageUrl}" alt="${item.altTxt}">
-            </div>
-            <div class="cart__item__content">
-            <div class="cart__item__content__description">
-                <h2>${item.name}</h2>
-                <p>${item.color}</p>
-                <p>${item.price}</p>
-            </div>
-            <div class="cart__item__content__settings">
-                <div class="cart__item__content__settings__quantity">
-                <p>Qté : </p>
-                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${item.quantity}">
-                </div>
-                <div class="cart__item__content__settings__delete">
-                <p class="deleteItem">Supprimer</p>
-                </div>
-            </div>
-            </div>
-      </article>`
+        const displayCard = document.getElementById("cart__items");
+        //create HTML Product Card
+        //_____Article
+        const article = document.createElement("article");
+        article.classList = "cart__item";
+        article.dataset.id = item._id;
+        article.dataset.color = item.color;
+
+        //____Image
+        const imageContainer = document.createElement("div");
+        imageContainer.classList = "cart__item__img";
+        article.appendChild(imageContainer);
+
+        const image = document.createElement("img")
+        image.src = item.imageUrl;
+        image.alt = item.altTxt;
+        imageContainer.appendChild(image);
+
+        //___informations Container
+        const informationsContainer = document.createElement("div");
+        informationsContainer.classList = "cart__item__content";
+        article.appendChild(informationsContainer);
+        
+        //__informations description content
+        const descriptionContent = document.createElement("div");
+        descriptionContent.classList = "cart__item__content__description";
+        informationsContainer.appendChild(descriptionContent);
+
+        //h2
+        const descriptionName = document.createElement("h2");
+        const descriptionNameText = document.createTextNode(`${item.name}`);
+        descriptionName.appendChild(descriptionNameText);
+        descriptionContent.appendChild(descriptionName);
+        //color
+        const descriptionColor = document.createElement("p");
+        const descriptionColorText = document.createTextNode(`${item.color}`);
+        descriptionColor.appendChild(descriptionColorText);
+        descriptionContent.appendChild(descriptionColor);
+        //price
+        const descriptionPrice = document.createElement("p");
+        const descriptionPriceText = document.createTextNode(`${item.price} €`);
+        descriptionPrice.appendChild(descriptionPriceText);
+        descriptionContent.appendChild(descriptionPrice);
+
+        //__informations settings content
+        const settingsContent = document.createElement("div");
+        settingsContent.classList = "cart__item__content__settings";
+        informationsContainer.appendChild(settingsContent);
+
+        //__quantity
+        const settingsQuantity = document.createElement("div");
+        settingsQuantity.classList = "cart__item__content__settings__quantity";
+        settingsContent.appendChild(settingsQuantity);
+
+        const quantity = document.createElement("p");
+        const quantityText = document.createTextNode(`Qté : `);
+        quantity.appendChild(quantityText);
+        settingsQuantity.appendChild(quantity);
+        
+        const inputQuantity = document.createElement("input")
+        inputQuantity.type = "number";
+        inputQuantity.classList = "itemQuantity";
+        inputQuantity.name = "itemQuantity";
+        inputQuantity.min = 1;
+        inputQuantity.max = 100;
+        inputQuantity.value = item.quantity;
+        settingsQuantity.appendChild(inputQuantity);
+        
+        //delete
+        const settingsDelete = document.createElement("div")
+        settingsDelete.classList = "cart__item__content__settings__delete";
+        settingsContent.appendChild(settingsDelete);
+        
+        const Delete = document.createElement("p");
+        Delete.classList = "cart__item__content__settings__delete"
+        const DeleteText = document.createTextNode("Supprimer");
+        DeleteText.classList = "deleteItem";
+        Delete.appendChild(DeleteText);
+        settingsDelete.appendChild(Delete);
+
+        //Article to display Card
+        displayCard.appendChild(article);
+
+
+        //_____CHANGE QUANTITY_____//
+        inputQuantity.addEventListener("change", event => {
+            changeQuantity(event.target, item);
+        })
+        
     })
 }
 
-//display sumPrices and quantity 
+//_____display sumPrices and quantity 
 function totalDisplay (data) {
     //init totalQuantity and totalPrice
     let totalQuantity = 0;
     let totalPrice = 0;
     //loop through data to calculate totalQuantity and totalPrice
     data.forEach(d => {
-        totalQuantity += d.quantity
-        totalPrice += d.price * d.quantity
+        totalQuantity += parseInt(d.quantity);
+        totalPrice += parseInt(d.price) * parseInt(d.quantity);
     })
     //display totalQuantity and totalPrice
     document.getElementById("totalPrice").innerText = totalPrice
     document.getElementById("totalQuantity").innerText = totalQuantity
 }
 
+//____Change quantity
+function changeQuantity (event, item) {
+    
+
+    let sameProduct = registeredItem.find(p => 
+        item._id === p.idValue && 
+        item.color === p.colorValue
+    );
+    //if same item in localStorage > modify quantity
+    if (sameProduct) {
+        //recover totalPrice
+        let totalPriceContainer = document.getElementById("totalPrice")
+        let totalPrice = parseInt(totalPriceContainer.innerText)
+
+        //change quantity
+        totalPrice -= item.price * item.quantity;
+        totalPrice += item.price * event.value;
+
+        //refresh display totalPrice
+        let newTotalPriceText = document.createTextNode(totalPrice);
+        totalPriceContainer.appendChild(newTotalPriceText);
+        totalPriceContainer.removeChild(totalPriceContainer.firstChild);
+
+        //add localStorage item quantity and quantity selected, parseInt > transform string in entire number
+        item.quantity = event.value;
+        console.log(item.quantity);
+        console.log(event.value);
+        //assign newQuantity of localStorage product
+        sameProduct.quantityValue = event.value;
+
+        //return data in localStorage
+        localStorage.setItem("item", JSON.stringify(registeredItem));
+    }
+}
 
 //_____FORM
 //select input Tag
