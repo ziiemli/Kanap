@@ -1,7 +1,6 @@
 //recover localStorage
 //reading localStorage and transform JSON in JS or create new table if it doesn't exist
 let registeredItem = JSON.parse(localStorage.getItem("item")) || []
-console.log(registeredItem)
 
 //_____Cart init
 const cartInit = () => {
@@ -15,7 +14,6 @@ const cartInit = () => {
         //call functions with data as parameters
         itemsDisplay(data)
         totalDisplay(data)
-        console.log(data)
     })
 }
 cartInit()
@@ -146,16 +144,13 @@ function totalDisplay(data) {
 }
 
 //compare the selected product and the localStorage product
-function compareProduct (item) {
-    return registeredItem.find((p) => 
-    item._id === p.idValue && 
-    item.color === p.colorValue)
+function compareProduct(item) {
+    return registeredItem.find((p) => item._id === p.idValue && item.color === p.colorValue)
 }
-
 
 //____Change quantity
 function changeQuantity(event, item) {
-    let sameProduct = compareProduct(item);
+    let sameProduct = compareProduct(item)
     //if same item in localStorage > modify quantity
     if (sameProduct) {
         //recover totalPrice & quantity
@@ -193,23 +188,23 @@ function changeQuantity(event, item) {
 }
 //____Delete Product
 function deleteProduct(event, item) {
-    let sameProduct = compareProduct(item);    
+    let sameProduct = compareProduct(item)
     //if same item in localStorage > delete Product
     if (sameProduct) {
         //update price & quantity
-        let array = {value: 0};
-        changeQuantity(array, item);
-        
+        let array = {value: 0}
+        changeQuantity(array, item)
+
         //select HTML article
         const selectArticle = event.closest("article")
         //delete HTML article
         selectArticle.remove()
-        
+
         //find item index
-        let index = registeredItem.findIndex(rank => rank === sameProduct);
+        let index = registeredItem.findIndex((rank) => rank === sameProduct)
         //remove item of localStorage
-        registeredItem.splice(index, 1);
-        localStorage.setItem("item", JSON.stringify(registeredItem));
+        registeredItem.splice(index, 1)
+        localStorage.setItem("item", JSON.stringify(registeredItem))
     }
 }
 
@@ -218,11 +213,11 @@ function deleteProduct(event, item) {
 let formInput = document.getElementsByTagName("input")
 
 //select each input
-const firstName = formInput.firstName
-const lastName = formInput.lastName
-const address = formInput.address
-const city = formInput.city
-const email = formInput.email
+let firstName = formInput.firstName
+let lastName = formInput.lastName
+let address = formInput.address
+let city = formInput.city
+let email = formInput.email
 
 //creation RegEx
 let firstNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
@@ -230,67 +225,104 @@ let lastNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
 let addressRegEx = /^([0-9\s]{0,4})+([A-Za-zÀ-Üà-ü-.\s]{2,60})$/g
 let cityRegEx = /^([A-Za-zÀ-Üà-ü-.'\s]{2,40})$/g
 let emailRegEx = /^([\w!#$%&'*+/=?^`{|}~-]{2}(?:[.]?[\w!#$%&'*+/=?^`{|}~-]){0,60})@([a-z]{2,246}[a-z.-]?)+([.][a-z]{2,3})$/g
+
 //Verify formValues
 function form() {
     //True/False Value First Name
-    firstName.addEventListener("change", () => {
-        if (firstNameRegEx.test(firstName.value)) {
+    firstName.addEventListener('input', () => {
+        if (firstName.value.match(firstNameRegEx)) {
+            console.log("yes");
         } else {
             document.getElementById("firstNameErrorMsg").innerHTML = `Veuillez renseigner un prénom valide`
+            console.log("false");
         }
     })
-    //True/False Value Last Name
-    lastName.addEventListener("change", () => {
-        if (lastNameRegEx.test(lastName.value)) {
-        } else {
-            document.getElementById("lastNameErrorMsg").innerHTML = `Veuillez renseigner un nom valide`
-        }
-    })
-    //True/False Value Address Name
-    address.addEventListener("change", () => {
-        if (addressRegEx.test(address.value)) {
-        } else {
-            document.getElementById("addressErrorMsg").innerHTML = `Veuillez renseigner une adresse valide`
-        }
-    })
-    //True/False Value City Name
-    city.addEventListener("change", () => {
-        if (cityRegEx.test(city.value)) {
-        } else {
-            document.getElementById("cityErrorMsg").innerHTML = `Veuillez renseigner une ville valide`
-        }
-    })
-    //True/False Value Email Name
-    email.addEventListener("change", () => {
-        if (emailRegEx.test(email.value)) {
-        } else {
-            document.getElementById("emailErrorMsg").innerHTML = `Veuillez renseigner une adresse email valide`
-        }
-    })
+    // //True/False Value Last Name
+    // lastName.addEventListener("input", () => {
+    //     if (lastNameRegEx.test(lastName.value)) {
+    //         
+    //     } else {
+    //         document.getElementById("lastNameErrorMsg").innerHTML = `Veuillez renseigner un nom valide`
+    //     }
+    // })
+    // //True/False Value Address Name
+    // address.addEventListener("change", () => {
+    //     if (addressRegEx.test(address.value)) {
+    //     } else {
+    //         document.getElementById("addressErrorMsg").innerHTML = `Veuillez renseigner une adresse valide`
+    //     }
+    // })
+    // //True/False Value City Name
+    // city.addEventListener("change", () => {
+    //     if (cityRegEx.test(city.value)) {
+    //     } else {
+    //         document.getElementById("cityErrorMsg").innerHTML = `Veuillez renseigner une ville valide`
+    //     }
+    // })
+    // //True/False Value Email Name
+    // email.addEventListener("change", () => {
+    //     if (emailRegEx.test(email.value)) {
+    //     } else {
+    //         document.getElementById("emailErrorMsg").innerHTML = `Veuillez renseigner une adresse email valide`
+    //     }
+    // })
 }
 form()
 
-const formValues = {
-    firstNameValue: firstName.value,
-    lastNameValue: lastName.value,
-    addressValue: address.value,
-    cityValue: city.value,
-    emailValue: email.value,
-}
+// function sendOrder() {
+//     const orderBtn = document.getElementById("order");
 
-console.log(formValues)
-
-const sendOrder = {
-    formValues,
-    registeredItem,
-}
-
-// const p = () => {
-//     fetch (`http://localhost:3000/api/products/order`, {
-//         method: "POST"
-//         body: JSON.stringify(sendOrder),
-//         headers: {
-//             "Content-Type": "application/json"
+//     orderBtn.addEventListener("click", function (e) {
+  
+//         e.preventDefault();
+//         //if localStorage is empty
+//         if (registeredItem.length === 0){
+//             alert("Veuillez ajouter des produits au panier");
 //         }
+//         else {
+//             //if form correct
+//             if (firstName.value && lastName.value && address.value && city.value && email.value) {
+//                 //push id of localStorage to new table
+//                 let orderProducts = [];
+//                 registeredItem.forEach(item => {
+//                     orderProducts.push(item.idValue);
+//                 });
+
+//                 //group informations to send
+//                 let formValues = {
+//                     contact: {
+//                         firstName: firstName.value,
+//                         lastName: lastName.value,
+//                         address: address.value,
+//                         city: city.value,
+//                         email: email.value,
+//                     },
+//                     products: orderProducts
+//                 }
+//                 console.log(formValues);
+
+//                 //post request
+//                 fetch(`http://localhost:3000/api/products/order`, {
+//                 method: "POST",
+//                 body: JSON.stringify(formValues),
+//                 headers: {
+//                     "Content-Type": "application/json",
+//                 },
+//                 })
+//                 .then(response => response.json)
+//                 .then(data => {
+//                     console.log(data);
+//                 })
+//             }
+//             //form not correct or empty
+//             else {
+//                 alert("Veuillez renseigner le formulaire");
+//             }
+//         }
+
+
+        
+
 //     })
 // }
+// sendOrder()
