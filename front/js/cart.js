@@ -220,109 +220,122 @@ let city = formInput.city
 let email = formInput.email
 
 //creation RegEx
-let firstNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
-let lastNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
-let addressRegEx = /^([0-9\s]{0,4})+([A-Za-zÀ-Üà-ü-.\s]{2,60})$/g
-let cityRegEx = /^([A-Za-zÀ-Üà-ü-.'\s]{2,40})$/g
-let emailRegEx = /^([\w!#$%&'*+/=?^`{|}~-]{2}(?:[.]?[\w!#$%&'*+/=?^`{|}~-]){0,60})@([a-z]{2,246}[a-z.-]?)+([.][a-z]{2,3})$/g
+const firstNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
+const lastNameRegEx = /^([A-Za-zÀ-Üà-ü-\s]{2,20})$/g
+const addressRegEx = /^([0-9\s]{0,4})+([A-Za-zÀ-Üà-ü-.\s]{2,60})$/g
+const cityRegEx = /^([A-Za-zÀ-Üà-ü-.'\s]{2,40})$/g
+const emailRegEx = /^([\w!#$%&'*+/=?^`{|}~-]{2}(?:[.]?[\w!#$%&'*+/=?^`{|}~-]){0,60})@([a-z]{2,246}[a-z.-]?)+([.][a-z]{2,3})$/g
 
 //Verify formValues
-function form() {
+function checkForm() {
     //True/False Value First Name
-    firstName.addEventListener('input', () => {
-        if (firstName.value.match(firstNameRegEx)) {
-            console.log("yes");
+    firstName.addEventListener("change", () => {
+        let errorFirstName = document.getElementById("firstNameErrorMsg");
+        if (!firstName.value.match(firstNameRegEx)) {
+            errorFirstName.innerText = "Veuillez renseigner un prénom valide"
         } else {
-            document.getElementById("firstNameErrorMsg").innerHTML = `Veuillez renseigner un prénom valide`
-            console.log("false");
+            errorFirstName.innerText = "";
         }
     })
-    // //True/False Value Last Name
-    // lastName.addEventListener("input", () => {
-    //     if (lastNameRegEx.test(lastName.value)) {
-    //         
-    //     } else {
-    //         document.getElementById("lastNameErrorMsg").innerHTML = `Veuillez renseigner un nom valide`
-    //     }
-    // })
-    // //True/False Value Address Name
-    // address.addEventListener("change", () => {
-    //     if (addressRegEx.test(address.value)) {
-    //     } else {
-    //         document.getElementById("addressErrorMsg").innerHTML = `Veuillez renseigner une adresse valide`
-    //     }
-    // })
-    // //True/False Value City Name
-    // city.addEventListener("change", () => {
-    //     if (cityRegEx.test(city.value)) {
-    //     } else {
-    //         document.getElementById("cityErrorMsg").innerHTML = `Veuillez renseigner une ville valide`
-    //     }
-    // })
-    // //True/False Value Email Name
-    // email.addEventListener("change", () => {
-    //     if (emailRegEx.test(email.value)) {
-    //     } else {
-    //         document.getElementById("emailErrorMsg").innerHTML = `Veuillez renseigner une adresse email valide`
-    //     }
-    // })
+    //True/False Value Last Name
+    lastName.addEventListener("change", () => {
+        let errorLastName = document.getElementById("lastNameErrorMsg");
+        if (!lastName.value.match(lastNameRegEx)) {
+            errorLastName.innerText = "Veuillez renseigner un nom valide"
+        } else {
+            errorLastName.innerText = ""
+        }
+    })
+    //True/False Value Address Name
+    address.addEventListener("change", () => {
+        let errorAddress = document.getElementById("addressErrorMsg");
+        if (!address.value.match(addressRegEx)) {
+            errorAddress.innerText = "Veuillez renseigner une adresse valide"
+        } else {
+            errorAddress.innerText = "";
+        }
+    })
+    //True/False Value City Name
+    city.addEventListener("change", () => {
+        let errorCity = document.getElementById("cityErrorMsg");
+        if (!city.value.match(cityRegEx)) {
+            errorCity.innerText = "Veuillez renseigner une ville valide"
+        } else {
+            errorCity.innerText = "";
+        }
+    })
+    //True/False Value Email Name
+    email.addEventListener("change", () => {
+        let errorEmail = document.getElementById("emailErrorMsg");
+        if (!email.value.match(emailRegEx)) {
+            errorEmail.innerText = "Veuillez renseigner une adresse email valide"
+        } else {
+            errorEmail.innerText = "";
+        }
+    })
 }
-form()
+checkForm()
 
-// function sendOrder() {
-//     const orderBtn = document.getElementById("order");
+//send order = valid form + ID of products
+function sendOrder() {
+    const orderBtn = document.getElementById("order");
 
-//     orderBtn.addEventListener("click", function (e) {
-  
-//         e.preventDefault();
-//         //if localStorage is empty
-//         if (registeredItem.length === 0){
-//             alert("Veuillez ajouter des produits au panier");
-//         }
-//         else {
-//             //if form correct
-//             if (firstName.value && lastName.value && address.value && city.value && email.value) {
-//                 //push id of localStorage to new table
-//                 let orderProducts = [];
-//                 registeredItem.forEach(item => {
-//                     orderProducts.push(item.idValue);
-//                 });
+    orderBtn.addEventListener("click", function (e) {
+        e.preventDefault();
 
-//                 //group informations to send
-//                 let formValues = {
-//                     contact: {
-//                         firstName: firstName.value,
-//                         lastName: lastName.value,
-//                         address: address.value,
-//                         city: city.value,
-//                         email: email.value,
-//                     },
-//                     products: orderProducts
-//                 }
-//                 console.log(formValues);
+        //if localStorage is empty
+        if (registeredItem.length === 0){
+            alert("Veuillez ajouter des produits au panier");
+        }
+        else {
+            //if form correct
+            if (firstName.value.match(firstNameRegEx) && 
+                lastName.value.match(lastNameRegEx) &&
+                address.value.match(addressRegEx) &&
+                city.value.match(cityRegEx) &&
+                email.value.match(emailRegEx)) {
+                //push id of localStorage to new table
+                let orderProducts = [];
+                registeredItem.forEach(item => {
+                    orderProducts.push(item.idValue);
+                });
 
-//                 //post request
-//                 fetch(`http://localhost:3000/api/products/order`, {
-//                 method: "POST",
-//                 body: JSON.stringify(formValues),
-//                 headers: {
-//                     "Content-Type": "application/json",
-//                 },
-//                 })
-//                 .then(response => response.json)
-//                 .then(data => {
-//                     console.log(data);
-//                 })
-//             }
-//             //form not correct or empty
-//             else {
-//                 alert("Veuillez renseigner le formulaire");
-//             }
-//         }
+                //group informations to send
+                let formValues = {
+                    contact: {
+                        firstName: firstName.value,
+                        lastName: lastName.value,
+                        address: address.value,
+                        city: city.value,
+                        email: email.value,
+                    },
+                    products: orderProducts
+                }
+                console.log(formValues);
+
+                //post request
+                fetch(`http://localhost:3000/api/products/order`, {
+                method: "POST",
+                body: JSON.stringify(formValues),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    //send to order confirmation page
+                    window.location.href = "confirmation.html?orderId=" + data.orderId
+                })
+            }
+            //form not correct or empty
+            else {
+                alert("Veuillez renseigner le formulaire");
+            }
+        }
 
 
         
 
-//     })
-// }
-// sendOrder()
+    })
+}
+sendOrder()

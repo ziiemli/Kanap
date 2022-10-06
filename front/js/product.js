@@ -1,8 +1,8 @@
 //_____Recover querystring url id
 //return the URL of the current page
-const querystring = new URL (window.location.href);
+let querystring = new URL (window.location.href);
 //return id of the URL
-const productID = querystring.searchParams.get("id");
+let productID = querystring.searchParams.get("id");
 
 let article = [];
 //_____Recover informations of a good product
@@ -106,6 +106,7 @@ function addItemToCart() {
                 registeredItem.push(newItem);
                 localStorage.setItem("item", JSON.stringify(registeredItem));
             }
+            alert("Le produit a été ajouté au panier")
         }
         //else alert message
         else {
