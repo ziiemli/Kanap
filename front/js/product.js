@@ -18,7 +18,7 @@ const recoverArticle = async function () {
         article = data;
     })
     .catch( () => {
-        alertalert("Une erreur est survenue, veuillez réessayer ultérieurement.")
+        alert("Une erreur est survenue, veuillez réessayer ultérieurement.")
     })
 }
 

@@ -12,7 +12,7 @@ const recoverProducts = async function () {
             console.log(products);
         })
         .catch( () => {
-            alertalert("Une erreur est survenue, veuillez réessayer ultérieurement.")
+            alert("Une erreur est survenue, veuillez réessayer ultérieurement.")
         })
 };
 
