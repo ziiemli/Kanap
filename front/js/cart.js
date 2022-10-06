@@ -11,7 +11,13 @@ const cartInit = () => {
             const i = await recoverProducts(item)
             return i
         })
-    ).then((data) => {
+    )
+    //sort the table by id
+    .then(data => {
+        let itemList = data.sort((a,b) => a._id.localeCompare(b._id));
+        return itemList;
+    })
+    .then((data) => {
         //call functions with data as parameters
         itemsDisplay(data)
         totalDisplay(data)
@@ -35,6 +41,7 @@ async function recoverProducts(item) {
 const itemsDisplay = (data) => {
     //loop through data to display each product
     data.forEach((item) => {
+        
         const displayCard = document.getElementById("cart__items")
         //create HTML Product Card
         //_____Article
