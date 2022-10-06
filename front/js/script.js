@@ -1,3 +1,5 @@
+//_____INDEX_____//
+
 let products = [];
 //_____Recover products from API
 const recoverProducts = async function () {
@@ -8,6 +10,9 @@ const recoverProducts = async function () {
         .then(data => {
             products = data;
             console.log(products);
+        })
+        .catch( () => {
+            alertalert("Une erreur est survenue, veuillez réessayer ultérieurement.")
         })
 };
 

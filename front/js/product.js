@@ -1,3 +1,5 @@
+//_____PRODUCT_____//
+
 //_____Recover querystring url id
 //return the URL of the current page
 let querystring = new URL (window.location.href);
@@ -14,7 +16,9 @@ const recoverArticle = async function () {
     //data
     .then(data => {
         article = data;
-        console.log(article);
+    })
+    .catch( () => {
+        alertalert("Une erreur est survenue, veuillez réessayer ultérieurement.")
     })
 }
 

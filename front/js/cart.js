@@ -1,5 +1,6 @@
-//recover localStorage
-//reading localStorage and transform JSON in JS or create new table if it doesn't exist
+//_____CART_____//
+
+//_____Recover localStorage
 let registeredItem = JSON.parse(localStorage.getItem("item")) || []
 
 //_____Cart init
@@ -7,8 +8,8 @@ const cartInit = () => {
     //loop through localStorage to recover each informations of item
     Promise.all(
         registeredItem.map(async (item) => {
-            const r = await recoverProducts(item)
-            return r
+            const i = await recoverProducts(item)
+            return i
         })
     ).then((data) => {
         //call functions with data as parameters
@@ -117,18 +118,18 @@ const itemsDisplay = (data) => {
         //Article to display Card
         displayCard.appendChild(article)
 
-        //_____CHANGE QUANTITY_____//
+        //_____Change Quantity
         inputQuantity.addEventListener("change", (event) => {
             changeQuantity(event.target, item)
         })
-        //_____Delete Product_____//
+        //_____Delete Product
         Delete.addEventListener("click", (event) => {
             deleteProduct(event.target, item)
         })
     })
 }
 
-//_____display sumPrices and quantity
+//_____Display sumPrices and quantity
 function totalDisplay(data) {
     //init totalQuantity and totalPrice
     let totalQuantity = 0
@@ -143,12 +144,12 @@ function totalDisplay(data) {
     document.getElementById("totalQuantity").innerText = totalQuantity
 }
 
-//compare the selected product and the localStorage product
+//_____Compare the selected product and the localStorage product
 function compareProduct(item) {
     return registeredItem.find((p) => item._id === p.idValue && item.color === p.colorValue)
 }
 
-//____Change quantity
+//_____Change quantity
 function changeQuantity(event, item) {
     let sameProduct = compareProduct(item)
     //if same item in localStorage > modify quantity
@@ -165,8 +166,6 @@ function changeQuantity(event, item) {
         //change quantity
         totalQuantity -= parseInt(item.quantity)
         totalQuantity += parseInt(event.value)
-        // totalQuantity = totalQuantity--;
-        console.log(totalQuantity)
 
         //refresh display totalPrice
         let newTotalPriceText = document.createTextNode(totalPrice)
@@ -177,7 +176,7 @@ function changeQuantity(event, item) {
         totalQuantityContainer.appendChild(newTotalQuantityText)
         totalQuantityContainer.removeChild(totalQuantityContainer.firstChild)
 
-        //assignto item.quantity the new quantity value
+        //assign to item.quantity the new quantity value
         item.quantity = event.value
         //assign newQuantity of localStorage product
         sameProduct.quantityValue = event.value
@@ -186,7 +185,7 @@ function changeQuantity(event, item) {
         localStorage.setItem("item", JSON.stringify(registeredItem))
     }
 }
-//____Delete Product
+//_____Delete Product
 function deleteProduct(event, item) {
     let sameProduct = compareProduct(item)
     //if same item in localStorage > delete Product
@@ -276,7 +275,7 @@ function checkForm() {
 }
 checkForm()
 
-//send order = valid form + ID of products
+//_____Send order = valid form + ID of products
 function sendOrder() {
     const orderBtn = document.getElementById("order");
 
@@ -311,7 +310,6 @@ function sendOrder() {
                     },
                     products: orderProducts
                 }
-                console.log(formValues);
 
                 //post request
                 fetch(`http://localhost:3000/api/products/order`, {
@@ -323,6 +321,8 @@ function sendOrder() {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    //clear cart & localStorage
+                    localStorage.clear();
                     //send to order confirmation page
                     window.location.href = "confirmation.html?orderId=" + data.orderId
                 })
@@ -332,10 +332,6 @@ function sendOrder() {
                 alert("Veuillez renseigner le formulaire");
             }
         }
-
-
-        
-
     })
 }
 sendOrder()
