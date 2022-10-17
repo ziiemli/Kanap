@@ -26,22 +26,22 @@ const recoverArticle = async function () {
 const articleDisplay = async function () {
     await recoverArticle()
     //img
-    let imageContainer = document.getElementsByClassName("item__img");
-    let image = document.createElement("img");
+    const imageContainer = document.getElementsByClassName("item__img");
+    const image = document.createElement("img");
     image.src = article.imageUrl;
     image.alt = article.altTxt;
     imageContainer[0].appendChild(image);
     //title
-    let titleContainer = document.getElementById("title");
-    let titleText = document.createTextNode(`${article.name}`);
+    const titleContainer = document.getElementById("title");
+    const titleText = document.createTextNode(`${article.name}`);
     titleContainer.appendChild(titleText);
     //price
-    let priceContainer = document.getElementById("price");
-    let priceText = document.createTextNode(`${article.price}`);
+    const priceContainer = document.getElementById("price");
+    const priceText = document.createTextNode(`${article.price}`);
     priceContainer.appendChild(priceText);
     //description
-    let descriptionContainer = document.getElementById("description");
-    let descriptionText = document.createTextNode(`${article.description}`);
+    const descriptionContainer = document.getElementById("description");
+    const descriptionText = document.createTextNode(`${article.description}`);
     descriptionContainer.appendChild(descriptionText);
     //colors_____
     //recover different colors of product
@@ -49,9 +49,10 @@ const articleDisplay = async function () {
     //loop = action for each color of product
     const color = colors.forEach(color => {
         //add option tag
-        let newOption = document.createElement("option");
+        const newOption = document.createElement("option");
         //insert in color
-        newOption.innerHTML = `${color}`;
+        const newOptionText = document.createTextNode(`${color}`);
+        newOption.appendChild(newOptionText);
         //add option tag with color in ID "colors"
         document.getElementById("colors").appendChild(newOption);
     });
@@ -63,9 +64,7 @@ articleDisplay();
     
 
 //_____Add to cart 
-//localstorage
-
-function addItemToCart() {
+const addItemToCart = () => {
 
     //call elements to have selected informations
     const selectID = productID;

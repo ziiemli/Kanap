@@ -137,7 +137,7 @@ const itemsDisplay = (data) => {
 }
 
 //_____Display sumPrices and quantity
-function totalDisplay(data) {
+const totalDisplay = (data) => {
     //init totalQuantity and totalPrice
     let totalQuantity = 0
     let totalPrice = 0
@@ -152,12 +152,12 @@ function totalDisplay(data) {
 }
 
 //_____Compare the selected product and the localStorage product
-function compareProduct(item) {
+const compareProduct = (item) => {
     return registeredItem.find((p) => item._id === p.idValue && item.color === p.colorValue)
 }
 
 //_____Change quantity
-function changeQuantity(event, item) {
+const changeQuantity = (event, item) => {
     let sameProduct = compareProduct(item)
     //if same item in localStorage > modify quantity
     if (sameProduct) {
@@ -193,7 +193,7 @@ function changeQuantity(event, item) {
     }
 }
 //_____Delete Product
-function deleteProduct(event, item) {
+const deleteProduct = (event, item) => {
     let sameProduct = compareProduct(item)
     //if same item in localStorage > delete Product
     if (sameProduct) {
@@ -233,7 +233,7 @@ const cityRegEx = /^([A-Za-zÀ-Üà-ü-.'\s]{2,40})$/g
 const emailRegEx = /^([\w!#$%&'*+/=?^`{|}~-]{2}(?:[.]?[\w!#$%&'*+/=?^`{|}~-]){0,60})@([a-z]{2,246}[a-z.-]?)+([.][a-z]{2,3})$/g
 
 //Verify formValues
-function checkForm() {
+const checkForm = () => {
     //True/False Value First Name
     firstName.addEventListener("change", () => {
         let errorFirstName = document.getElementById("firstNameErrorMsg");
@@ -283,7 +283,7 @@ function checkForm() {
 checkForm()
 
 //_____Send order = valid form + ID of products
-function sendOrder() {
+const sendOrder = () => {
     const orderBtn = document.getElementById("order");
 
     orderBtn.addEventListener("click", function (e) {
