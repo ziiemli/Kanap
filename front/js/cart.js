@@ -3,30 +3,8 @@
 //_____Recover localStorage
 let registeredItem = JSON.parse(localStorage.getItem("item")) || []
 
-//_____Cart init
-const cartInit = () => {
-    //loop through localStorage to recover each informations of item
-    Promise.all(
-        registeredItem.map(async (item) => {
-            const i = await recoverProducts(item)
-            return i
-        })
-    )
-    //sort the table by id
-    .then(data => {
-        let itemList = data.sort((a,b) => a._id.localeCompare(b._id));
-        return itemList;
-    })
-    .then((data) => {
-        //call functions with data as parameters
-        itemsDisplay(data)
-        totalDisplay(data)
-    })
-}
-cartInit()
-
 //_____Recover item informations from API and add infos of localStorage
-async function recoverProducts(item) {
+const recoverProducts = async (item) => {
     //call data API
     const result = await fetch(`http://localhost:3000/api/products/${item.idValue}`)
     //transform data result in JSON
@@ -37,11 +15,32 @@ async function recoverProducts(item) {
     return obj
 }
 
+//_____Cart init
+const cartInit = () => {
+    //loop through localStorage to recover each informations of item
+    Promise.all(
+        registeredItem.map(async (item) => {
+            const i = await recoverProducts(item)
+            return i
+        })
+    )
+        //sort the table by id
+        .then((data) => {
+            let itemList = data.sort((a, b) => a._id.localeCompare(b._id))
+            return itemList
+        })
+        .then((data) => {
+            //call functions with data as parameters
+            itemsDisplay(data)
+            totalDisplay(data)
+        })
+}
+cartInit()
+
 //_____Items Display
 const itemsDisplay = (data) => {
     //loop through data to display each product
     data.forEach((item) => {
-        
         const displayCard = document.getElementById("cart__items")
         //create HTML Product Card
         //_____Article
@@ -236,16 +235,16 @@ const emailRegEx = /^([\w!#$%&'*+/=?^`{|}~-]{2}(?:[.]?[\w!#$%&'*+/=?^`{|}~-]){0,
 const checkForm = () => {
     //True/False Value First Name
     firstName.addEventListener("change", () => {
-        let errorFirstName = document.getElementById("firstNameErrorMsg");
+        let errorFirstName = document.getElementById("firstNameErrorMsg")
         if (!firstName.value.match(firstNameRegEx)) {
             errorFirstName.innerText = "Veuillez renseigner un prénom valide"
         } else {
-            errorFirstName.innerText = "";
+            errorFirstName.innerText = ""
         }
     })
     //True/False Value Last Name
     lastName.addEventListener("change", () => {
-        let errorLastName = document.getElementById("lastNameErrorMsg");
+        let errorLastName = document.getElementById("lastNameErrorMsg")
         if (!lastName.value.match(lastNameRegEx)) {
             errorLastName.innerText = "Veuillez renseigner un nom valide"
         } else {
@@ -254,29 +253,29 @@ const checkForm = () => {
     })
     //True/False Value Address Name
     address.addEventListener("change", () => {
-        let errorAddress = document.getElementById("addressErrorMsg");
+        let errorAddress = document.getElementById("addressErrorMsg")
         if (!address.value.match(addressRegEx)) {
             errorAddress.innerText = "Veuillez renseigner une adresse valide"
         } else {
-            errorAddress.innerText = "";
+            errorAddress.innerText = ""
         }
     })
     //True/False Value City Name
     city.addEventListener("change", () => {
-        let errorCity = document.getElementById("cityErrorMsg");
+        let errorCity = document.getElementById("cityErrorMsg")
         if (!city.value.match(cityRegEx)) {
             errorCity.innerText = "Veuillez renseigner une ville valide"
         } else {
-            errorCity.innerText = "";
+            errorCity.innerText = ""
         }
     })
     //True/False Value Email Name
     email.addEventListener("change", () => {
-        let errorEmail = document.getElementById("emailErrorMsg");
+        let errorEmail = document.getElementById("emailErrorMsg")
         if (!email.value.match(emailRegEx)) {
             errorEmail.innerText = "Veuillez renseigner une adresse email valide"
         } else {
-            errorEmail.innerText = "";
+            errorEmail.innerText = ""
         }
     })
 }
@@ -284,27 +283,22 @@ checkForm()
 
 //_____Send order = valid form + ID of products
 const sendOrder = () => {
-    const orderBtn = document.getElementById("order");
+    const orderBtn = document.getElementById("order")
 
     orderBtn.addEventListener("click", function (e) {
-        e.preventDefault();
+        e.preventDefault()
 
         //if localStorage is empty
-        if (registeredItem.length === 0){
-            alert("Veuillez ajouter des produits au panier");
-        }
-        else {
+        if (registeredItem.length === 0) {
+            alert("Veuillez ajouter des produits au panier")
+        } else {
             //if form correct
-            if (firstName.value.match(firstNameRegEx) && 
-                lastName.value.match(lastNameRegEx) &&
-                address.value.match(addressRegEx) &&
-                city.value.match(cityRegEx) &&
-                email.value.match(emailRegEx)) {
+            if (firstName.value.match(firstNameRegEx) && lastName.value.match(lastNameRegEx) && address.value.match(addressRegEx) && city.value.match(cityRegEx) && email.value.match(emailRegEx)) {
                 //push id of localStorage to new table
-                let orderProducts = [];
-                registeredItem.forEach(item => {
-                    orderProducts.push(item.idValue);
-                });
+                let orderProducts = []
+                registeredItem.forEach((item) => {
+                    orderProducts.push(item.idValue)
+                })
 
                 //group informations to send
                 let formValues = {
@@ -315,28 +309,28 @@ const sendOrder = () => {
                         city: city.value,
                         email: email.value,
                     },
-                    products: orderProducts
+                    products: orderProducts,
                 }
 
                 //post request
                 fetch(`http://localhost:3000/api/products/order`, {
-                method: "POST",
-                body: JSON.stringify(formValues),
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                    method: "POST",
+                    body: JSON.stringify(formValues),
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 })
-                .then(response => response.json())
-                .then(data => {
-                    //clear cart & localStorage
-                    localStorage.clear();
-                    //send to order confirmation page
-                    window.location.href = "confirmation.html?orderId=" + data.orderId
-                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        //clear cart & localStorage
+                        localStorage.clear()
+                        //send to order confirmation page
+                        window.location.href = "confirmation.html?orderId=" + data.orderId
+                    })
             }
             //form not correct or empty
             else {
-                alert("Veuillez renseigner le formulaire");
+                alert("Veuillez renseigner le formulaire")
             }
         }
     })
